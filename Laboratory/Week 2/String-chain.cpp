@@ -4,9 +4,9 @@
 
 using namespace std;
 
-bool yaContado(char z, string s) {
-    for (int i = 0; i < s.length(); i++) {
-        if (s[i] == z) {
+bool yaContado(char letter, string prompt) {
+    for (int i = 0; i < prompt.length(); i++) {
+        if (prompt[i] == letter) {
             return true;
         }
     }
