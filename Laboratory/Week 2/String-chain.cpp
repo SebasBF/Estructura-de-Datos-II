@@ -1,51 +1,55 @@
 #include <iostream>
+#include <cctype>
 #include <string>
+
 using namespace std;
 
-
-void initializeLettersArray(string prompt, char letters[]){
-    for(int i = 0; i < prompt.length() ; i++ ){
-        letters[i] = prompt[i];
-    }
-
-}
-
-bool checkLetters(char letters[], string prompt){
-    bool exists = false;
-    for(int i = 0; i < prompt.length() ; i++ ){
-        if(letters[i] == prompt[i]){
-            exists = true;
-            return;
-        }    
-        letters[i+1];
-    }
-    return exists;
-}
-
-
-
-int countChar(string prompt, string letters[]){
-    int length = prompt.length();
-    for(int i = 0; i < length ; i++ ){
-        cout << prompt[i]<< "\n";
-        if(checkLetters){
-
+bool yaContado(char z, string s) {
+    for (int i = 0; i < s.length(); i++) {
+        if (s[i] == z) {
+            return true;
         }
-        
     }
-    return 0;
-
+    return false;
 }
 
-int main(){
-string prompt;
-char letters[];
-
-    cout << "Please indicate the prompt to count the letters: ";
-    getline(cin,prompt);
-    cout << "caracteres: " << prompt.length() << endl;
-    initializeLettersArray(prompt, letters);
-    countChar(prompt);
+void contarchar(string prompt, char letter, int length, string& letterStorage) {
+    int f = 0;
    
+    if (letter == ' ') {
+        return;
+    }
 
+    if (yaContado(letter, letterStorage)) {
+        return;
+    }
+
+    letterStorage += letter;
+
+    for (int j = 0; j < length; j++) {
+        
+        if (prompt[j] == letter) {
+            f++;
+        }
+    }
+
+    cout << letter << ": " << f << endl;
+}
+
+int main() {
+    cout << "Ingrese una cadena: ";
+    string prompt;
+    getline(cin, prompt);
+    for (int i = 0; i < prompt.length(); i++) {
+        prompt[i] = tolower(prompt[i]);
+    }
+
+    int length = prompt.length();
+    string letterStorage = "";
+
+    for (int i = 0; i < length; i++) {
+       contarchar(prompt, prompt[i], length, letterStorage);
+    }
+
+    return 0;
 }
