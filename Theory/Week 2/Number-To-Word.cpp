@@ -90,26 +90,27 @@ int main(){
     double number;
     int cents, intPart;
     bool validEntry = false;
+     
     do{
+        cout << "Formato de ejemplo: 784000000.78 " << endl;
+        cout << "Indique el monto a convertir en palabras(limite 999,999,999.99): ";
+        cin >> number;
 
-    cout << "Formato de ejemplo: 784000000.78 " << endl;
-    cout << "Indique el monto a convertir en palabras(limite 999,999,999.99): ";
-    cin >> number;
-    
-    if(cin.fail()){
-        cout << "Entrada inválida. Favor intentar de nuevo.\n";   
-        cout << "------------------------------------------------\n\n";   
+        if(cin.fail()){
+            cout << "Entrada inválida. Favor intentar de nuevo.\n";
+            cout << "------------------------------------------------\n\n";
 
-        cin.clear();
-        cin.ignore(256,'\n');
-        continue;
-    }
-    
-    if (number < 0 || number > 999999999) {
-        cout << "Número fuera de rango. Favor intentar de nuevo.\n";
-        cout << "------------------------------------------------\n\n";   
-        continue;
-    }
+            cin.clear();
+            cin.ignore(256, '\n');
+            continue;
+        }
+
+        if(number < 0 || number > 999999999){
+            cout << "Número fuera de rango. Favor intentar de nuevo.\n";
+            cout << "------------------------------------------------\n\n";
+            continue;
+        }
+
         validEntry = true;
 
     }while(!validEntry);
