@@ -26,7 +26,7 @@ string convertHundreds(int number, bool isThousandOrMillion){
     if(number > 0){
         if(number < 20){
             words += units[number];
-
+            return words;
         } 
         else if(number > 20 && number < 30){
             if(number == 21){
