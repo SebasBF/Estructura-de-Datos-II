@@ -1,131 +1,182 @@
 #include <iostream>
-#include <sstream>
 #include <vector>
 #include <string>
 #include <cctype>
+
 using namespace std;
 
-char toLowerChar(char c) {
-    return static_cast<char>(tolower(c));
+
+string vocalesAbiertas = "aeo";
+string vocalesCerradas = "iu";
+
+
+bool esLetra(char caracter) {
+    return (caracter >= 'A' && caracter <= 'Z') || (caracter >= 'a' && caracter <= 'z');
 }
 
-bool isVowel(char c) {
-    c = toLowerChar(c);
-    return (c == 'a' || c == 'e' || c == 'i' || c == 'o' || c == 'u' ||
-        c == 'á' || c == 'é' || c == 'í' || c == 'ó' || c == 'ú' || c == 'ü');
-}
-
-bool isAccented(char c) {
-    c = toLowerChar(c);
-    return (c == 'á' || c == 'é' || c == 'í' || c == 'ó' || c == 'ú');
-}
-
-bool formsDiphthong(char v1, char v2) {
-    v1 = toLowerChar(v1);
-    v2 = toLowerChar(v2);
-    bool v1Weak = (v1 == 'i' || v1 == 'u') && !isAccented(v1);
-    bool v2Weak = (v2 == 'i' || v2 == 'u') && !isAccented(v2);
-    if (v1Weak && v2Weak) return true;
-    if ((v1Weak && !isAccented(v1)) && !v2Weak) return true;
-    if ((v2Weak && !isAccented(v2)) && !v1Weak) return true;
-    return false;
+bool esVocal(char caracter) {
+    caracter = tolower(caracter); 
+    return (vocalesAbiertas.find(caracter) != string::npos || vocalesCerradas.find(caracter) != string::npos);
 }
 
 
-bool isPermissibleOnset(const string& cluster) {
-    const vector<string> onsets = { "bl", "br", "cl", "cr", "dr", "fl", "fr",
-                                   "gl", "gr", "pl", "pr", "tr" };
-    for (const auto& onset : onsets) {
-        if (cluster == onset)
-            return true;
-    }
-    return false;
-}
-
-string syllabifyWord(const string& word, char separator = '-') {
-    string lower;
-    for (char c : word)
-        lower.push_back(toLowerChar(c));
-
-    vector<string> syllables;
-    int i = 0;
-    while (i < lower.size()) {
-        string syllable = "";
-        while (i < lower.size() && !isVowel(lower[i])) {
-            syllable.push_back(lower[i]);
-            i++;
+vector<string> separarPalabras(const string& frase) {
+    vector<string> palabras;
+    string palabraActual;
+    for (char caracter : frase) {
+        if (caracter == ' ') {
+            if (!palabraActual.empty())
+                palabras.push_back(palabraActual);
+            palabraActual.clear();
         }
-        if (i < lower.size() && isVowel(lower[i])) {
-            syllable.push_back(lower[i]);
-            i++;
-            while (i < lower.size() && isVowel(lower[i])) {
+        else if (esLetra(caracter)) {
+            palabraActual += caracter;
+        }
+    }
+    if (!palabraActual.empty())
+        palabras.push_back(palabraActual);
+    return palabras;
+}
 
-                if (!syllable.empty() && formsDiphthong(syllable.back(), lower[i])) {
-                    syllable.push_back(lower[i]);
-                    i++;
+
+int buscarSiguienteVocal(const string& palabra, int indiceActual) {
+    for (int i = indiceActual + 1; i < palabra.size(); i++) {
+        if (esVocal(palabra[i]))
+            return i;
+    }
+    return -1; 
+}
+
+
+vector<string> dividirEnSilabas(const string& palabra) {
+    vector<string> silabas;
+    string silabaActual;
+
+    for (int i = 0; i < palabra.size(); i++) {
+        silabaActual += palabra[i];
+        bool esAbierta = (vocalesAbiertas.find(tolower(palabra[i])) != string::npos);
+        bool esCerrada = (vocalesCerradas.find(tolower(palabra[i])) != string::npos);
+
+        if (esAbierta || esCerrada) {
+            
+            if (i == palabra.size() - 1) {
+                silabas.push_back(silabaActual);
+                return silabas;
+            }
+
+            
+            if (esAbierta && (vocalesAbiertas.find(tolower(palabra[i + 1])) != string::npos)) {
+                silabas.push_back(silabaActual);
+                silabaActual.clear();
+            }
+            
+            else if (esCerrada && (vocalesCerradas.find(tolower(palabra[i + 1])) != string::npos)) {
+                if (tolower(palabra[i]) == tolower(palabra[i + 1])) {
+                 
+                    silabas.push_back(silabaActual);
+                    silabaActual.clear();
                 }
                 else {
+                   
+                    silabaActual += palabra[++i];
+                    silabas.push_back(silabaActual);
+                    silabaActual.clear();
+                }
+            }
+            
+            else {
+                int posicionSiguienteVocal = buscarSiguienteVocal(palabra, i);
+                if (posicionSiguienteVocal == -1) {
+                    
+                    silabas.push_back(silabaActual + palabra.substr(i + 1));
+                    return silabas;
+                }
+
+                int distancia = posicionSiguienteVocal - i - 1;
+
+                switch (distancia) {
+                case 1:
+                 
+                    silabas.push_back(silabaActual);
+                    silabaActual.clear();
+                    silabaActual += palabra[++i];
+                    break;
+
+                case 2:
+                   
+                    if (palabra[i + 2] == 'l' || palabra[i + 2] == 'r' || (palabra[i + 1] == 'c' && palabra[i + 2] == 'h')) {
+                        silabas.push_back(silabaActual);
+                        silabaActual.clear();
+                        silabaActual += palabra[++i];
+                        silabaActual += palabra[++i];
+                    }
+                    else {
+                        silabaActual += palabra[++i];
+                        silabas.push_back(silabaActual);
+                        silabaActual.clear();
+                        silabaActual += palabra[++i];
+                    }
+                    break;
+
+                case 3:
+                    // Tres consonantes → dividir antes de la última si no forman grupo inseparable
+                    if (palabra[i + 3] == 'l' || palabra[i + 3] == 'r') {
+                        silabaActual += palabra[++i];
+                        silabas.push_back(silabaActual);
+                        silabaActual.clear();
+                        silabaActual += palabra[++i];
+                        silabaActual += palabra[++i];
+                    }
+                    else {
+                        silabaActual += palabra[++i];
+                        silabaActual += palabra[++i];
+                        silabas.push_back(silabaActual);
+                        silabaActual.clear();
+                        silabaActual += palabra[++i];
+                    }
+                    break;
+
+                case 4:
+                    // Cuatro consonantes → dividir en dos grupos
+                    silabaActual += palabra[++i];
+                    silabaActual += palabra[++i];
+                    silabas.push_back(silabaActual);
+                    silabaActual.clear();
+                    silabaActual += palabra[++i];
+                    silabaActual += palabra[++i];
+                    break;
+
+                default:
                     break;
                 }
             }
         }
-
-        string followingCons = "";
-        int j = i;
-        while (j < lower.size() && !isVowel(lower[j])) 
-        {
-            followingCons.push_back(lower[j]);
-            j++;
-        }
-        if (j == lower.size()) {
-            syllable += followingCons;
-            i = j;
-        }
-        else {
-            if (followingCons.size() == 0) {
-
-            }
-            else if (followingCons.size() == 1) {
-
-            }
-            else {
-                string two = followingCons.substr(0, 2);
-                if (!isPermissibleOnset(two)) 
-                {
-                    syllable.push_back(followingCons[0]);
-                    i++; 
-                }
-            }
-        }
-
-        syllables.push_back(syllable);
     }
 
-    string result;
-    for (size_t k = 0; k < syllables.size(); k++) {
-        if (k > 0)
-            result.push_back(separator);
-        result += syllables[k];
-    }
-    return result;
+    if (!silabaActual.empty())
+        silabas.push_back(silabaActual);
+
+    return silabas;
 }
-
-string syllabifySentence(const string& sentence, char separator = '-') {
-    istringstream iss(sentence);
-    string word, output;
-    bool first = true;
-    while (iss >> word) {
-        if (!first)
-            output += " ";
-        output += syllabifyWord(word, separator);
-        first = false;
+void imprimirSilabas(const vector<string>& silabas) {
+    for (size_t i = 0; i < silabas.size() - 1; i++) {
+        cout << silabas[i] << '-';
     }
-    return output;
+    cout << silabas.back() << endl;
 }
 
 int main() {
-    string input;
-    getline(cin, input);
+    string fraseUsuario;
+    cout << "Introduzca una frase: ";
+    getline(cin, fraseUsuario);
+
+   
+    auto palabras = separarPalabras(fraseUsuario);
+
     
-    cout << syllabifySentence(input) << endl;
+    for (auto& palabra : palabras) {
+        imprimirSilabas(dividirEnSilabas(palabra));
+    }
+
+    return 0;
 }
