@@ -42,7 +42,7 @@ bool endGame(string array[], string player1, string player2){
             cout << "\n\nEl ganador es " << (array[combination[0]] == "X" ? player1 : player2) << endl;
             return true;
         }
-    }
+    }   
 
     // Verificar si el juego sigue en curso
     for (int i = 0; i < 9; i++) {
