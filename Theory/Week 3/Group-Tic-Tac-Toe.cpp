@@ -1,7 +1,5 @@
 #include <iostream>
 #include <string>
-#include <limits> 
-
 using namespace std;
 
 void inicializarTablero(char tablero[3][3]){
