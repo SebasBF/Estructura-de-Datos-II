@@ -55,8 +55,7 @@ void solve(int matrix[3][3], int row, int col) {
         return;
     }
 
-    for (int i = 1; i <= 9; i++)  //Caso base, inicia aqui
-    {
+    for (int i = 1; i <= 9; i++){ //Caso base, inicia aqui
         contador++;  // Incrementamos el contador en cada intento
         if (isSafe(matrix, i))
         {
@@ -67,6 +66,7 @@ void solve(int matrix[3][3], int row, int col) {
         }
     }
 }
+
 int main(){
 
     int matrix[3][3] = {0};
