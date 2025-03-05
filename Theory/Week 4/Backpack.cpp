@@ -34,8 +34,8 @@ void showBackpack(int backpack[], double amounts[], int size) {
 }
 
 int main() {
-    int backpack[5], currentWeight = 0, i = 0;
-    double amounts[5];  
+    int backpack[4], currentWeight = 0, i = 0;
+    double amounts[4];  
     int totalBenefit = 0;
 
     while (i < 5) {
@@ -47,6 +47,7 @@ int main() {
         if (!isFull(currentWeight, newWeight)) {  
             backpack[i] = best;
             amounts[i] = newWeight;
+            
             currentWeight += newWeight;
             totalBenefit += benefit[best];
 
@@ -58,7 +59,8 @@ int main() {
             int remainingSpace = 100 - currentWeight;
             backpack[i] = best;
             amounts[i] = remainingSpace;
-            totalBenefit += (((double)benefit[best] / weights[best]) * remainingSpace) + 2;
+            
+            totalBenefit += (((double)benefit[best] / weights[best]) * remainingSpace);
 
             currentWeight = 100; 
             break;
