@@ -1,5 +1,6 @@
 #include <iostream>
 #include <set>
+#include <string>
 using namespace std;
 
 bool thereAreRepetitions(set<char> set, string prompt){
