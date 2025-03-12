@@ -2,24 +2,12 @@
 #include <vector>
 using namespace std;
 
-void initializeDP(vector<vector<int>> &dp, int length1, int length2)
-{
-    for (int i = 0; i <= length1; i++)
-    {
-        dp[i][0] = 0;
-    }
-    for (int j = 0; j <= length2; j++)
-    {
-        dp[0][j] = 0;
-    }
-}
-
 void longestSequence(int length1, int length2, string chain1, string chain2, vector<vector<int>> &dp){
 
     for (int i = 1; i <= length1; i++){
 
-        for (int j = 1; j <= length2; j++)
-        {
+        for (int j = 1; j <= length2; j++){
+            
             if (chain1[i - 1] == chain2[j - 1])
             {
                 dp[i][j] = dp[i - 1][j - 1] + 1;
@@ -72,7 +60,6 @@ int main(){
     length2 = chain2.length();
 
     vector<vector<int>> dp(length1 + 1, vector<int>(length2 + 1, 0));
-    initializeDP(dp, length1, length2);
 
     longestSequence(length1, length2, chain1, chain2, dp);
    
