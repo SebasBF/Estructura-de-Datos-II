@@ -9,6 +9,7 @@
         "ios": "cpp",
         "limits": "cpp",
         "xiosbase": "cpp",
-        "utility": "cpp"
+        "utility": "cpp",
+        "vector": "cpp"
     }
 }
