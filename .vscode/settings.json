@@ -10,6 +10,7 @@
         "limits": "cpp",
         "xiosbase": "cpp",
         "utility": "cpp",
-        "vector": "cpp"
+        "vector": "cpp",
+        "iomanip": "cpp"
     }
 }
