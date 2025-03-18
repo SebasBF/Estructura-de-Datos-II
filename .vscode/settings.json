@@ -11,6 +11,7 @@
         "xiosbase": "cpp",
         "utility": "cpp",
         "vector": "cpp",
-        "iomanip": "cpp"
+        "iomanip": "cpp",
+        "ctime": "cpp"
     }
 }
