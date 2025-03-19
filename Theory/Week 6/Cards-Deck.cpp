@@ -1,7 +1,7 @@
 #include <iostream>
 using namespace std;
 
-string PALOS[4] = {"Espadas", "Corazones", "Diamantes", "Tréboles"};
+string PALOS[4] = {"Picas", "Corazones", "Diamantes", "Tréboles"};
 string VALORES[13] = {"A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K"};
 
 struct Carta
@@ -72,7 +72,7 @@ int main()
     createDeck(baraja);
 
     do{
-        cout << "PALOS DISPONIBLES: \n 0 - Espadas\n 1 - Corazones\n 2 - Diamantes\n 3 - Treboles\n";
+        cout << "PALOS DISPONIBLES: \n 0 - Picas\n 1 - Corazones\n 2 - Diamantes\n 3 - Treboles\n";
         cout << "\nPD: Hay valores de 2-10 y A, J, Q, K para cada palo" << endl;
 
         cout << "\nSeleccione el palo(0-3) a seleccionar para la carta #1:";
