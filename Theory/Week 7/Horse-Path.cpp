@@ -10,9 +10,8 @@ bool isValidMove(int x, int y, int N, vector<vector<int>> board) {
     if (x >= 0 && x < N && y >= 0 && y < N && board[x][y] == -1){
         return true;
     }
-    else{
-        return false; 
-    }
+
+    return false; 
 }
 
 int countFutureMoves(int x, int y, int N, vector<vector<int>>& board) {
